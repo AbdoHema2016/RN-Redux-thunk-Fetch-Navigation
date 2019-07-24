@@ -9,26 +9,29 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import { MonoText } from '../components/StyledText';
 
+const {width,height}=Dimensions.get('window');
 class HomeScreen extends Component{
 
   constructor(props){
     super(props)
     this.state={
+      
       employees:{},
       dataSource:null,
-    
+     
     }
   }
   
   
   componentDidMount(){
     this.props.EmployeeFetch()
-    console.log(this.props)
+    //console.log(this.props)
    // console.log(this.props.goFetch())
   }
 
@@ -36,7 +39,16 @@ class HomeScreen extends Component{
 		this.fetchedData(nextProps)
   }
   fetchedData(props){
-   console.log(props)
+   //console.log(props)
+  }
+  renderItem(item){
+    return(
+      <TouchableOpacity 
+      onPress={() => this.props.navigation.navigate('Employee',{item:item})}
+        style={styles.cardStyles}>
+        <Text>{item.employee_name}</Text>
+      </TouchableOpacity>
+    )
   }
   render(){
   return (
@@ -47,7 +59,7 @@ class HomeScreen extends Component{
           
           <FlatList 
             data = {this.props.anyPossibleNameEmployee}
-            renderItem={({item})=><Text>{item.employee_name}</Text>}
+            renderItem={({item})=>this.renderItem(item)}
             keyExtractor={(item)=>item.id}
           />
           
@@ -146,7 +158,14 @@ function handleHelpPress() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#D3D3D3',
+  },
+  cardStyles:{
+    backgroundColor:'white',
+    marginLeft:8,
+    marginRight:8,
+    height:height*0.1,
+    marginBottom:8,
   },
   developmentModeText: {
     marginBottom: 20,
