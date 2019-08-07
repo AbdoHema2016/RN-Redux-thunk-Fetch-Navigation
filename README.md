@@ -66,3 +66,35 @@ Step 9. imports for app.js and adding provider
                   </Provider>
                 );
 Step 10. Restart the packager         
+
+Step 11. import Connect and Actions into the receiving data file,call the actionadd map state to props
+
+                import {connect} from 'react-redux'
+                import * as actions from '../actions'
+                
+                componentDidMount(){
+                this.props.EmployeeFetch() 
+              }
+              
+              renderItem(item){
+                return(
+                  <TouchableOpacity 
+                  onPress={() => this.props.navigation.navigate('Employee',{item:item})}
+                    style={styles.cardStyles}>
+                    <Text>{item.employee_name}</Text>
+                  </TouchableOpacity>
+                )
+              }
+              return(
+                <FlatList 
+                  data = {this.props.anyPossibleNameEmployee}
+                  renderItem={({item})=>this.renderItem(item)}
+                  keyExtractor={(item)=>item.id}
+                />
+              )
+              
+              
+              function mapStateToProps({employeeReducer}){
+                return {anyPossibleNameEmployee:employeeReducer.fetchedEmployees}
+              }
+              export default connect(mapStateToProps,actions)(HomeScreen)
